@@ -2,6 +2,7 @@
 import os
 
 import discord
+from discord.ext.commands import Bot
 from dotenv import load_dotenv
 from apiclient.discovery import build  # youtube api
 
@@ -12,11 +13,18 @@ VC_CHANNEL_ID =  os.getenv('VC_CHANNEL_ID')
 
 client = discord.Client()
 
+bot = Bot("$") # This is the operator to call the command (!test) 
+
+@bot.command()
+async def test(ctx):
+    await ctx.send("Command executed")
+  
+
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
-    channel = client.get_channel(int(VC_CHANNEL_ID))
-    await channel.connect()    
+    # channel = client.get_channel(int(VC_CHANNEL_ID))
+    # await channel.connect()    
 
 @client.event
 async def on_message(message):
@@ -25,6 +33,26 @@ async def on_message(message):
 
     if message.content.startswith('hello'):
         await message.channel.send('👾 Why hello, ' + str(message.author))
+
+@bot.command()
+async def test2(ctx, arg1, arg2):
+    await ctx.send('You passed {} and {}'.format(arg1, arg2))
+
+@bot.command(pass_context=True)
+async def play2(ctx):
+    print(ctx)
+    url = ctx.message.content
+    url = url.strip('play2 ')
+
+    # author = ctx.message.author
+    # voice_channel = author.voice_channel
+    # vc = await client.join_voice_channel(voice_channel)
+
+    channel = client.get_channel(int(VC_CHANNEL_ID))
+    vc = await channel.connect()  
+
+    player = await vc.create_ytdl_player(url)
+    player.start()
 
 # @client.event
 # async def on_message(self, ctx):
