@@ -11,20 +11,17 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 YOUTUBE_KEY = os.getenv('YOUTUBE_KEY')
 VC_CHANNEL_ID =  os.getenv('VC_CHANNEL_ID')
 
-# bot = discord.bot()
-# bot = commands.Bot(command_prefix="!")
 bot = Bot("!") # This is the operator to call the command (!test) 
+game = discord.Game('Mewsic')
 
 @bot.command()
 async def test(ctx):
     await ctx.send("Command executed")
-  
 
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
-    # channel = bot.get_channel(int(VC_CHANNEL_ID))
-    # await channel.connect()    
+    await bot.change_presence(activity=game)
 
 @bot.listen("on_message")
 async def on_message(message):
@@ -53,6 +50,14 @@ async def play(ctx):
 
     player = await vc.create_ytdl_player(url)
     player.start()
+
+# @bot def on_command_error(ctx, error):
+#   if instance(error, commands.CommandNotFound):
+#       await ctx.send("invalid")
+
+@bot.command()
+async def hey1(ctx, arg1, *, arg2):
+    await ctx.send(arg2)
 
 # @bot.event
 # async def on_message(self, ctx):
