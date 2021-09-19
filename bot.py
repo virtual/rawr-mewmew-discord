@@ -11,24 +11,24 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 YOUTUBE_KEY = os.getenv('YOUTUBE_KEY')
 VC_CHANNEL_ID =  os.getenv('VC_CHANNEL_ID')
 
-client = discord.Client()
-
-bot = Bot("$") # This is the operator to call the command (!test) 
+# bot = discord.bot()
+# bot = commands.Bot(command_prefix="!")
+bot = Bot("!") # This is the operator to call the command (!test) 
 
 @bot.command()
 async def test(ctx):
     await ctx.send("Command executed")
   
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-    # channel = client.get_channel(int(VC_CHANNEL_ID))
+    print(f'{bot.user} has connected to Discord!')
+    # channel = bot.get_channel(int(VC_CHANNEL_ID))
     # await channel.connect()    
 
-@client.event
+@bot.listen("on_message")
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     if message.content.startswith('hello'):
@@ -39,22 +39,22 @@ async def test2(ctx, arg1, arg2):
     await ctx.send('You passed {} and {}'.format(arg1, arg2))
 
 @bot.command(pass_context=True)
-async def play2(ctx):
+async def play(ctx):
     print(ctx)
     url = ctx.message.content
     url = url.strip('play2 ')
 
     # author = ctx.message.author
     # voice_channel = author.voice_channel
-    # vc = await client.join_voice_channel(voice_channel)
+    # vc = await bot.join_voice_channel(voice_channel)
 
-    channel = client.get_channel(int(VC_CHANNEL_ID))
+    channel = bot.get_channel(int(VC_CHANNEL_ID))
     vc = await channel.connect()  
 
     player = await vc.create_ytdl_player(url)
     player.start()
 
-# @client.event
+# @bot.event
 # async def on_message(self, ctx):
 #     print(self)
 #     print("---------")
@@ -91,4 +91,4 @@ async def play2(ctx):
 #                 # logger.exception("Missing embed links perms")
 #                 await ctx.send("Looks like the bot doesn't have embed links perms... It kinda needs these, so I'd suggest adding them!")
 
-client.run(TOKEN)
+bot.run(TOKEN)
