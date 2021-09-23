@@ -23,3 +23,11 @@ Create `.env` file; this should never be committed to GitHub:
 DISCORD_TOKEN=discordapptoken
 YOUTUBE_KEY=youtubeapikey
 ```
+
+### More adds
+
+```
+pip install pyperclip
+pip install requests
+pip install beautifulsoup4
+```
