@@ -30,4 +30,5 @@ YOUTUBE_KEY=youtubeapikey
 pip install pyperclip
 pip install requests
 pip install beautifulsoup4
+python3 -m pip install pyinputplus
 ```
