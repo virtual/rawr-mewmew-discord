@@ -19,8 +19,11 @@ if (ranktype != 'levels'):
   users = []
   rank = '0' # fix this with destructuring?
   # td:nth-child(3) > a > b, 
-  for user in soup.select('td:nth-child(3) > a > b'):
-    users.append(user.getText() + ' - ' + rank)
+
+  rowusers = soup.select('td:nth-child(3) > a > b')
+  rowfame = soup.select('td:nth-child(4) td td')
+  for user, fame in zip(rowusers, rowfame):
+    users.append(user.getText() + ' - ' + fame.getText())
   print('\r\n'.join(users))
 else:
   url = CHAR_URL + ign
